@@ -9,10 +9,10 @@ inputs for hyperparameter search, complex experiments with lots of input paramet
 $ pip3 install .
 ```
 
-# Usage
+## Usage
 You provide a dictionary containing JSON-like objects (numbers, strings, bools,
 lists, tuples and dictionaries are allowed), called a template. `cfggen` will then process the
-template and generates a Python object.
+template and generate a Python object.
 
 The main function that builds templates is called `build_template`. Often you may want to write
 the template in a JSON(5) or YAML file, in that case you can use `build_template_from_file`.
@@ -36,10 +36,8 @@ An operator is a dictionary with a single key starting with `$`. The value assoc
 key contains parameters for the operator. The operator will return a Python object after it is
 evaluated by the builder. Operators can be arbitrarily nested.
 
-## Operator list
-- **Integer range**
-
-Syntax: `$range: int | list[int]`
+### Integer range
+`$range: int | list[int]`
   
 Evaluates to a list of numbers, similarly to the built-in `range` function.
 ```python
@@ -47,9 +45,8 @@ build_template({"$range": 3})         # [0, 1, 2]
 build_template({"$range": [1, 7, 2]}) # [1, 3, 5]
 ```
 
-- **Reference to another key**
-
-Syntax: `$ref: str`
+### Reference to another key
+`$ref: str`
 
 Evaluates to the value of a top level key in the input template. It is useful when you want
 to use a specific key multiple times, but you want to define it only once.
@@ -80,9 +77,8 @@ build_template({
 """
 ```
 
-- **Cartesian product**
-
-Syntax: `$product: dict[str, iterable] | list[iterable]`
+### Cartesian product
+`$product: dict[str, iterable] | list[iterable]`
 
 Evaluates to a list containing a cartesian product of the input parameters.
 If the input parameter is a list of iterables, it behaves like `list(itertools.product(*params))`.
@@ -166,9 +162,7 @@ evaluates to [
 """
 ```
 
-- **Variable interpolation**
-
-Syntax:
+### Variable interpolation
 ```
 $env: {
     name: str,
@@ -192,9 +186,8 @@ build_template({
 # { "a": 1, "b": 42 }
 ```
 
-- **List concatenation**
-
-Syntax: `$+: list[iterable]`
+### List concatenation
+`$+: list[iterable]`
 
 Evaluates to a concatenation of its input parameters (i.e. behaves like
 `list(itertools.chain.from_iterable(params))`). It is useful to concatenate output which is
@@ -215,12 +208,10 @@ build_template({
 }
 ```
 
-- **Zip**
-
-Syntax: `$zip: list[iterable]`
+### Zip
+`$zip: list[iterable]`
 
 Evaluates to a list of zipped values from the input parameters, i.e. behaves like `list(zip(*params))`.
-
 ```python
 build_template({
     "a": {"$zip": [[1, 2], ["a", "b"]]}
