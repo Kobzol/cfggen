@@ -61,8 +61,10 @@ def _resolve_product(state, args):
 
 def _resolve_zip(state, args):
     assert _is_list_like(args)
-    assert _check_type_all(args, list) or _check_type_all(args, tuple)
-    return list(zip(*[_resolve(state, item) for item in args]))
+
+    items = [_resolve(state, item) for item in args]
+    assert _check_type_all(items, list) or _check_type_all(items, tuple)
+    return list(zip(*items))
 
 
 ENV_CONSTRUCTORS = {

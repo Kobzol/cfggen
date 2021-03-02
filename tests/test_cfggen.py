@@ -141,6 +141,16 @@ def test_config_zip():
            ]
 
 
+def test_config_zip_ref():
+    assert build_template(
+        {
+            "a": [1, 2, 3],
+            "b": [3, 4, 5],
+            "c": {"$zip": [{"$ref": "a"}, {"$ref": "b"}]}
+        }
+    )["c"] == [(1, 3), (2, 4), (3, 5)]
+
+
 def test_config_top_level_product():
     configurations = build_template(
         {
