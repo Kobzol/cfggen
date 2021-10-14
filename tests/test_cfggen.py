@@ -58,6 +58,10 @@ def test_config_concat():
     )["a"] == [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5]
 
 
+def test_config_concat_keep_tuple():
+    assert build_template({"$+": ([1, 2], [3, 4])}) == (1, 2, 3, 4)
+
+
 def test_config_product():
     assert build_template({"$product": [{"$range": 2}, [3, 4]]}) == [
         (0, 3),
@@ -132,12 +136,12 @@ def test_config_zip():
     assert build_template(
         {"$product": {"a": {"$zip": [["a", "b", "c"], [1, 2, 3]]}, "b": ["a", "b"], }}
     ) == [
-               {"a": ("a", 1), "b": "a"},
-               {"a": ("a", 1), "b": "b"},
-               {"a": ("b", 2), "b": "a"},
-               {"a": ("b", 2), "b": "b"},
-               {"a": ("c", 3), "b": "a"},
-               {"a": ("c", 3), "b": "b"},
+               {"a": ["a", 1], "b": "a"},
+               {"a": ["a", 1], "b": "b"},
+               {"a": ["b", 2], "b": "a"},
+               {"a": ["b", 2], "b": "b"},
+               {"a": ["c", 3], "b": "a"},
+               {"a": ["c", 3], "b": "b"},
            ]
 
 

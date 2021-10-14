@@ -39,20 +39,26 @@ def _resolve_range(state, args):
     raise Exception("Invalid argument for range")
 
 
+def _map_list_like(state, iterable):
+    assert _is_list_like(iterable)
+    constructor = type(iterable)
+    return constructor((_resolve(state, item) for item in iterable))
+
+
 def _resolve_concat(state, args):
     assert isinstance(args, Iterable)
-    items = [_resolve(state, item) for item in args]
+    items = _map_list_like(state, args)
     assert _check_type_all(items, Iterable)
-    return list(itertools.chain.from_iterable(items))
+    return type(items)(itertools.chain.from_iterable(items))
 
 
 def _resolve_product(state, args):
     if _is_list_like(args):
-        args = [_resolve(state, item) for item in args]
+        args = _map_list_like(state, args)
         assert _check_type_all(args, list) or _check_type_all(args, tuple)
         return list(itertools.product(*args))
     elif isinstance(args, dict):
-        values = [_resolve(state, item) for item in args.values()]
+        values = _map_list_like(state, tuple(args.values()))
         assert _check_type_all(values, Iterable)
         return [dict(zip(args.keys(), items)) for items in itertools.product(*values)]
     else:
