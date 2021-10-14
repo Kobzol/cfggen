@@ -132,6 +132,20 @@ def test_config_product_nested_wrapped():
            ]
 
 
+def test_config_product_eval_dict():
+    template = {
+        "foo": {"a": [1, 2], "b": [3, 4]},
+        "bar": {
+            "$product": {
+                "$ref": "foo"
+            }
+        }
+    }
+
+    assert build_template(template)["bar"] == [{'a': 1, 'b': 3}, {'a': 1, 'b': 4},
+                                               {'a': 2, 'b': 3}, {'a': 2, 'b': 4}]
+
+
 def test_config_zip():
     assert build_template(
         {"$product": {"a": {"$zip": [["a", "b", "c"], [1, 2, 3]]}, "b": ["a", "b"], }}

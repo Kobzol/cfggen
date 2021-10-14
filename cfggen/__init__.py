@@ -53,6 +53,7 @@ def _resolve_concat(state, args):
 
 
 def _resolve_product(state, args):
+    args = _resolve(state, args)
     if _is_list_like(args):
         args = _map_list_like(state, args)
         assert _check_type_all(args, list) or _check_type_all(args, tuple)
