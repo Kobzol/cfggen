@@ -5,6 +5,12 @@ complex Python objects from a simple declarative description. It's useful for ge
 inputs for hyperparameter search, complex experiments with lots of input parameters, etc.
 
 ## Installation
+### From GitHub
+```bash
+$ pip3 install git+https://github.com/kobzol/cfggen
+```
+
+### Locally
 ```bash
 $ pip3 install .
 ```
